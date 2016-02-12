@@ -7,8 +7,8 @@
     "InstanceType" : {
       "Description" : "EC2 instance type",
       "Type" : "String",
-      "AllowedValues" : ["t2.micro"],
-      "Default" : "t2.micro"
+      "AllowedValues" : ["t2.nano"],
+      "Default" : "t2.nano"
     },
     "OperatorEmail": {
       "Description": "Email address to notify if there are any scaling operations",

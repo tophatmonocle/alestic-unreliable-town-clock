@@ -7,19 +7,44 @@
 sns_topic_arn="$1"
 region="$2"
 support="$3"
+clock_period="$4"
 
 echo "INSTANCE CONFIGURATION START"
 
 apt-get update
-apt-get install -y awscli ntp
+apt-get install -y awscli ntp supervisor
+
+sudo add-apt-repository ppa:fkrull/deadsnakes
+sudo apt-get update
+sudo apt-get install python2.7
 
 publish_source=https://raw.githubusercontent.com/tophatmonocle/alestic-unreliable-town-clock/master/unreliable-town-clock-publish
 publish=/usr/local/bin/unreliable-town-clock-publish
 curl -s --location --retry 10 -o $publish $publish_source
 chmod +x $publish
 
-cat <<EOF >/etc/cron.d/unreliable-town-clock
-#0,15,30,45 * * * * ubuntu $publish "$sns_topic_arn" "$region" "$support"
+# Create Python script
+mkdir /clock
+cat <<EOF >/clock/clock.py
+def f():
+	$publish "$sns_topic_arn" "$region" "$support"
+    threading.Timer(10, f).start()
+f()
 EOF
+
+# Create Supervisor config
+cat <<EOF >/etc/supervisor/supervisord.conf
+[program:clock]
+directory=/clock/
+command=python clock.py
+autostart=true
+autorestart=true
+startretries=$clock_period
+stderr_logfile=/var/log/clock.err.log
+stdout_logfile=/var/log/clock.out.log
+EOF
+
+# Start Supervisor process
+sudo supervisorctl start clock
 
 echo "INSTANCE CONFIGURATION COMPLETE"

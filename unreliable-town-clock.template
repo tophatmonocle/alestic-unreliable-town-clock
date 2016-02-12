@@ -29,7 +29,12 @@
     "InstallScriptURL" : {
       "Description" : "URL of script to install/configure new instances",
       "Type" : "String",
-      "Default" : "https://raw.githubusercontent.com/alestic/alestic-unreliable-town-clock/master/unreliable-town-clock-bootstrap"
+      "Default" : "https://raw.githubusercontent.com/tophatmonocle/alestic-unreliable-town-clock/master/unreliable-town-clock-bootstrap"
+    },
+    "ClockPeriod" : {
+      "Description" : "The duration in seconds in which the clock pulses",
+      "Type" : "String",
+      "Default" : "10"
     }
   },
 
@@ -202,6 +207,7 @@
             "'", { "Ref" : "topic" }, "' ",
             "'", { "Ref" : "AWS::Region" }, "' ",
             "'", { "Ref" : "Support" }, "' ",
+            "'", { "Ref" : "ClockPeriod" }, "' ",
             "\n",
           ""
         ]]}}

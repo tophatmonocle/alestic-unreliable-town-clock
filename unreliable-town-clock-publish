@@ -2,7 +2,7 @@
 #
 # unreliable-town-clock-publish
 #
-# https://github.com/alestic/alestic-unreliable-town-clock
+# https://github.com/tophatmonocle/alestic-unreliable-town-clock
 #
 exec > >(logger -t UTC -s) 2>&1
 set -x

@@ -13,7 +13,7 @@ echo "INSTANCE CONFIGURATION START"
 apt-get update
 apt-get install -y awscli ntp
 
-publish_source=https://raw.githubusercontent.com/alestic/alestic-unreliable-town-clock/master/unreliable-town-clock-publish
+publish_source=https://raw.githubusercontent.com/tophatmonocle/alestic-unreliable-town-clock/master/unreliable-town-clock-publish
 publish=/usr/local/bin/unreliable-town-clock-publish
 curl -s --location --retry 10 -o $publish $publish_source
 chmod +x $publish

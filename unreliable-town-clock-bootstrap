@@ -27,7 +27,7 @@ import threading
 from subprocess import call
 def f():
 	call(["$publish", "$sns_topic_arn", "$region", "$clock_period"])
-	threading.Timer(10, f).start()
+	threading.Timer(int("$clock_period"), f).start()
 f()
 EOF
 

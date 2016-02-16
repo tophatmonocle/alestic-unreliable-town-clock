@@ -7,8 +7,18 @@
     "InstanceType" : {
       "Description" : "EC2 instance type",
       "Type" : "String",
-      "AllowedValues" : ["t2.nano"],
-      "Default" : "t2.nano"
+      "AllowedValues" : ["t2.micro"],
+      "Default" : "t2.micro"
+    },
+    "VPCZoneId" : {
+      "Description" : "VPC Zone Identifier",
+      "Type" : "String",
+      "Default" : "Your VPC Zone ID"
+    },
+    "AvailabilityZone" : {
+      "Description" : "AWS Availability Zone",
+      "Type" : "String",
+      "Default" : "us-east-1"
     },
     "OperatorEmail": {
       "Description": "Email address to notify if there are any scaling operations",
@@ -134,14 +144,15 @@
     "ServerGroup" : {
       "Type" : "AWS::AutoScaling::AutoScalingGroup",
       "Properties" : {
-        "AvailabilityZones" : { "Fn::GetAZs" : ""},
+        "AvailabilityZones" : [ { "Ref" : "AvailabilityZone" } ],
         "LaunchConfigurationName" : { "Ref" : "LaunchConfig" },
         "MinSize" : 1,
         "MaxSize" : 1,
         "NotificationConfiguration" : {
           "TopicARN" : { "Ref" : "ScalingNotificationTopic" },
           "NotificationTypes" : [ "autoscaling:EC2_INSTANCE_LAUNCH","autoscaling:EC2_INSTANCE_LAUNCH_ERROR","autoscaling:EC2_INSTANCE_TERMINATE", "autoscaling:EC2_INSTANCE_TERMINATE_ERROR"]
-        }
+        },
+        "VPCZoneIdentifier": [ { "Ref" : "VPCZoneId" } ]
       }
     },
 
@@ -193,7 +204,6 @@
       "Properties" : {
         "KeyName" : { "Ref" : "SshKeyName" },
         "ImageId" : { "Fn::FindInMap" : [ "AMIRegionMap", { "Ref" : "AWS::Region" }, "AMIID" ] },
-        "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
         "InstanceType" : { "Ref" : "InstanceType" },
         "InstanceMonitoring": "true",
         "IamInstanceProfile" : { "Ref" : "InstanceProfile" },

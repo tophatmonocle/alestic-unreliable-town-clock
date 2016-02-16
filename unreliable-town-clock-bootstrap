@@ -23,9 +23,10 @@ chmod +x $publish
 # Create Python script
 mkdir -p /clock
 cat > /clock/clock.py << EOF
+import threading
 from subprocess import call
 def f():
-	call(["$publish", "$sns_topic_arn", "$region", "$support"])
+	call(["$publish", "$sns_topic_arn", "$region", "$clock_period"])
 	threading.Timer(10, f).start()
 f()
 EOF
@@ -39,6 +40,6 @@ respawn
 exec python /clock/clock.py
 EOF
 
-sudo service clock restart
+sudo service clock start
 
 echo "INSTANCE CONFIGURATION COMPLETE"

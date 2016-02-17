@@ -79,7 +79,8 @@
         "Subscription": [ {
             "Protocol": "email",
             "Endpoint": { "Ref": "OperatorEmail" }
-        } ]
+        } ],
+      "TopicName" : "town-clock"
       }
     },
 
@@ -152,7 +153,8 @@
           "TopicARN" : { "Ref" : "ScalingNotificationTopic" },
           "NotificationTypes" : [ "autoscaling:EC2_INSTANCE_LAUNCH","autoscaling:EC2_INSTANCE_LAUNCH_ERROR","autoscaling:EC2_INSTANCE_TERMINATE", "autoscaling:EC2_INSTANCE_TERMINATE_ERROR"]
         },
-        "VPCZoneIdentifier": [ { "Ref" : "VPCZoneId" } ]
+        "VPCZoneIdentifier": [ { "Ref" : "VPCZoneId" } ],
+        "Tags" : [ { "Key" : "Name", "Value" : "town-clock", "PropagateAtLaunch": true } ]
       }
     },
 

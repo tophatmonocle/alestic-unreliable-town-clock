@@ -147,7 +147,7 @@
       "Properties" : {
         "AvailabilityZones" : [ { "Ref" : "AvailabilityZone" } ],
         "LaunchConfigurationName" : { "Ref" : "LaunchConfig" },
-        "MinSize" : 1,
+        "MinSize" : 0,
         "MaxSize" : 1,
         "NotificationConfiguration" : {
           "TopicARN" : { "Ref" : "ScalingNotificationTopic" },
@@ -155,6 +155,11 @@
         },
         "VPCZoneIdentifier": [ { "Ref" : "VPCZoneId" } ],
         "Tags" : [ { "Key" : "Name", "Value" : "town-clock", "PropagateAtLaunch": true } ]
+      },
+      "UpdatePolicy" : {
+        "AutoScalingRollingUpdate": {
+          "MinInstancesInService": 0
+        }
       }
     },
 
@@ -248,4 +253,5 @@
       "Value" : { "Ref" : "InstanceSecurityGroup" }
     }
   }
+
 }
